@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_ussr_table
+      author: terenin
+      changes:
+        - createTable:
+            tableName: ussr_table
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: dtype
+                  type: VARCHAR(31)
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: VARCHAR(255)
+              - column:
+                  name: last_name
+                  type: VARCHAR(255)
+              - column:
+                  name: role
+                  type: VARCHAR(255)
+              - column:
+                  name: credit_card_id
+                  type: UUID
+              - column:
+                  name: password
+                  type: VARCHAR(1023)
+                  constraints:
+                    nullable: false
+              - addPrimaryKey:
+                  columnNames: id
+                  constraintName: pk_token_table

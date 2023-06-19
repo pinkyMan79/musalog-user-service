@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: ./DDL/20062023-create-user-table.yaml
+      relativeToChangelogFile: true

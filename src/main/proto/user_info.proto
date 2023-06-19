@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package userrpc;
+
+option java_package = "one.terenin.userrpc.grpc";
+option java_multiple_files = true;
+
+enum UserRole{
+  GUEST = 0;
+  USER = 1;
+  SUBSCRIBED = 2;
+}
+
+enum ExceptionCode{
+  UNAUTHORIZED = 0;
+  USER_NOT_FOUND = 1;
+  USER_ROLE_NOT_SUPPORTED = 2;
+  USER_PASSWORD_INCORRECT = 3;
+  USER_LOGIN_ALMOST_IN_USE = 4;
+
+}
+
+message UserRequest{
+  string username = 1;
+  string password = 2;
+}
+
+message UserResponse{
+  string userId = 1;
+  string username = 2;
+  UserRole role = 3;
+}
+
+message UserRegisterRequest{
+  string username = 1;
+  string email = 2;
+  string firstName = 3;
+  string lastName = 4;
+  UserRole role = 5;
+}
+
+service UserService{
+  rpc register(UserRegisterRequest) returns (UserResponse){}
+}
