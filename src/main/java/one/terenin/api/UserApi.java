@@ -19,8 +19,11 @@ public interface UserApi {
     @PostMapping("/register")
     ResponseEntity<UserResponse> register(@RequestBody UserRegisterRequest request);
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     ResponseEntity<UserResponse> login(@RequestBody UserRequest request);
+
+    @GetMapping("/login/by/{username}")
+    ResponseEntity<UserResponse> loginByUsername(@PathVariable("username") String username);
 
     @GetMapping("/exists/by/{username}/{password}")
     ResponseEntity<Boolean> existsByUsernameAndPassword(@PathVariable String username,
