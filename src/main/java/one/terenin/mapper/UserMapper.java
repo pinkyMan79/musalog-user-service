@@ -12,6 +12,8 @@ import org.mapstruct.Mappings;
 public interface UserMapper {
     @Mapping(target = "id", ignore = true)
     UserEntity map(UserRequest request);
+    @Mapping(source = "id", target = "userId")
     UserResponse map(UserEntity entity);
-    UserResponse map(UserRegisterRequest request);
+    @Mapping(target = "encodedPassword", source = "password")
+    UserEntity map(UserRegisterRequest request);
 }

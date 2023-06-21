@@ -41,9 +41,7 @@ public class JwtVerificatorImpl implements JwtVerificator {
     @Override
     public VerificationResult verifyToken(String token) {
         Claims claims = extractClaimsFromToken(token);
-
         Date exp = claims.getExpiration();
-
         if (exp.before(new Date())) {
             String newToken = updateToken(token);
             if (newToken == null){

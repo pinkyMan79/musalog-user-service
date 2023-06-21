@@ -2,7 +2,7 @@ spring:
   application:
     name: musalog-user-service
   datasource:
-    url: jdbc:postgresql://localhost:5431/user-database
+    url: jdbc:postgresql://localhost:5433/user-database
     username: postgres
     password: root
     hikari:
