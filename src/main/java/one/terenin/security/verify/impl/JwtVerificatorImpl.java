@@ -1,9 +1,11 @@
 package one.terenin.security.verify.impl;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import one.terenin.exception.children.AuthenticationException;
 import one.terenin.exception.children.ServiceCallException;
 import one.terenin.exception.children.ServiceNotFoundException;
@@ -27,6 +29,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtVerificatorImpl implements JwtVerificator {
@@ -40,7 +43,17 @@ public class JwtVerificatorImpl implements JwtVerificator {
 
     @Override
     public VerificationResult verifyToken(String token) {
-        Claims claims = extractClaimsFromToken(token);
+        Claims claims;
+        try {
+            claims = extractClaimsFromToken(token);
+        } catch (ExpiredJwtException e){
+            claims = e.getClaims();
+            log.info("{}{}{}{}",
+                    token,
+                    "\n Token expired, generate new. ",
+                    "\n Expiration time: ",
+                    new Date().getTime() - claims.getExpiration().getTime());
+        }
         Date exp = claims.getExpiration();
         if (exp.before(new Date())) {
             String newToken = updateToken(token);
@@ -63,7 +76,7 @@ public class JwtVerificatorImpl implements JwtVerificator {
                 .loadUserByUsername(username), role);
     }
 
-    private Claims extractClaimsFromToken(String token) {
+    private Claims extractClaimsFromToken(String token) throws ExpiredJwtException {
         return Jwts.parser()
                 .setSigningKey(Base64.getEncoder().encodeToString(propertySource
                         .getJwtSecret()

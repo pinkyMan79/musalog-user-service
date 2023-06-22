@@ -1,5 +1,6 @@
 package one.terenin.api;
 
+import one.terenin.dto.request.CreditCardRequest;
 import one.terenin.dto.request.UserRegisterRequest;
 import one.terenin.dto.request.UserRequest;
 import one.terenin.dto.response.UserResponse;
@@ -25,9 +26,11 @@ public interface UserApi {
     @PostMapping("/login")
     ResponseEntity<UserResponse> login(@RequestBody UserRequest request);
 
+    // api method
     @GetMapping("/login/by/{username}")
     ResponseEntity<UserResponse> loginByUsername(@PathVariable("username") String username);
 
+    // api method
     @GetMapping("/exists/by/{username}/{password}")
     ResponseEntity<Boolean> existsByUsernameAndPassword(@PathVariable String username,
                                                      @PathVariable String password);
@@ -42,8 +45,16 @@ public interface UserApi {
     ResponseEntity<Boolean> makeSubscription(UserRequest request);
 
     // boolean -> rejected or no
+    // ver. 1
     @PatchMapping("/bind/card/{card_id}")
     @PreAuthorize("hasRole('USER') or hasRole('SUBSCRIBER')")
     ResponseEntity<Boolean> bindCreditCard(@PathVariable("card_id") UUID cardId);
+
+    // ver. 2
+    @PostMapping("/register/card/")
+    @PreAuthorize("hasRole('USER') or hasRole('SUBSCRIBER')")
+    ResponseEntity<Boolean> registerCreditCard(@RequestBody CreditCardRequest request);
+
+
 
 }

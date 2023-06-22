@@ -1,5 +1,6 @@
 package one.terenin.service;
 
+import one.terenin.dto.request.CreditCardRequest;
 import one.terenin.dto.request.UserRegisterRequest;
 import one.terenin.dto.request.UserRequest;
 import one.terenin.dto.response.UserResponse;
@@ -14,5 +15,6 @@ public interface UserService {
     UserResponse updateUserInfo(UserRegisterRequest request);
     boolean makeSubscription(UserRequest request);
     boolean bindCreditCard(UUID creditCardId);
+    boolean registerCreditCard(CreditCardRequest request);
 
 }

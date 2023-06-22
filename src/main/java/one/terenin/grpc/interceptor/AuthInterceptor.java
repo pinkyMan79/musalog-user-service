@@ -8,8 +8,6 @@ import io.grpc.ServerCallHandler;
 import io.grpc.ServerInterceptor;
 import io.grpc.Status;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import one.terenin.security.propertysource.JWTPropertySource;
 import org.springframework.stereotype.Component;

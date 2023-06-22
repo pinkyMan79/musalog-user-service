@@ -2,6 +2,7 @@ package one.terenin.controller;
 
 import lombok.RequiredArgsConstructor;
 import one.terenin.api.UserApi;
+import one.terenin.dto.request.CreditCardRequest;
 import one.terenin.dto.request.UserRegisterRequest;
 import one.terenin.dto.request.UserRequest;
 import one.terenin.dto.response.UserResponse;
@@ -40,16 +41,21 @@ public class UserController implements UserApi {
 
     @Override
     public ResponseEntity<UserResponse> updateUserInfo(UserRegisterRequest request) {
-        return null;
+        return ResponseEntity.ok(service.updateUserInfo(request));
     }
 
     @Override
     public ResponseEntity<Boolean> makeSubscription(UserRequest request) {
-        return null;
+        return ResponseEntity.ok(service.makeSubscription(request));
     }
 
     @Override
     public ResponseEntity<Boolean> bindCreditCard(UUID cardId) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Boolean> registerCreditCard(CreditCardRequest request) {
         return null;
     }
 }

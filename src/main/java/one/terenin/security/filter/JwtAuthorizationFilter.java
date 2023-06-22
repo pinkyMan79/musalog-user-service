@@ -26,7 +26,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtVerificator verificator;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         if (extractor.isHeaderPresent(request)){
             try {
                 String token = extractor.extractToken(request)
