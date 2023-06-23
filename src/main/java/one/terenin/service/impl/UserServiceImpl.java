@@ -7,12 +7,14 @@ import one.terenin.dto.request.UserRegisterRequest;
 import one.terenin.dto.request.UserRequest;
 import one.terenin.dto.response.UserResponse;
 import one.terenin.entity.UserEntity;
+import one.terenin.exception.BaseException;
 import one.terenin.exception.children.ServiceCallException;
 import one.terenin.exception.common.ErrorCode;
 import one.terenin.mapper.UserMapper;
 import one.terenin.repository.UserRepository;
 import one.terenin.service.UserService;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper mapper;
     private final DiscoveryClient client;
     private final RestTemplate restTemplate;
+    private final PasswordEncoder encoder;
 
     @Override
     public UserResponse register(UserRegisterRequest request) {
@@ -35,7 +38,8 @@ public class UserServiceImpl implements UserService {
             log.error("{}{}{}", "User with username: ", request.getUsername(), " already exists");
             throw  new ServiceCallException(ErrorCode.SERVICE_CALL_REJECTED);
         }
-        UserEntity entity = repository.save(mapper.map(request));
+        UserRegisterRequest withHashedPassword = request.toBuilder().password(encoder.encode(request.getPassword())).build();
+        UserEntity entity = repository.save(mapper.map(withHashedPassword));
         return mapper.map(entity);
     }
 
@@ -43,7 +47,11 @@ public class UserServiceImpl implements UserService {
     public UserResponse login(UserRequest request) {
         UserEntity entity = repository.findUserEntityByUsername(request.getUsername())
                 .orElseThrow(() -> new ServiceCallException(ErrorCode.SERVICE_CALL_REJECTED));
-        return mapper.map(entity);
+        if (encoder.matches(request.getPassword() ,entity.getEncodedPassword())){
+            return mapper.map(entity);
+        } else {
+            throw new BaseException(ErrorCode.USER_PASSWORD_INVALID);
+        }
     }
 
     @Override
