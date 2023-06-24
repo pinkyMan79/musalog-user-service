@@ -45,8 +45,8 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<Boolean> makeSubscription(UserRequest request) {
-        return ResponseEntity.ok(service.makeSubscription(request));
+    public ResponseEntity<String> makeSubscription() {
+        return ResponseEntity.ok(service.makeSubscription());
     }
 
     @Override

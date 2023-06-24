@@ -13,7 +13,7 @@ public interface UserService {
     UserResponse login(UserRequest request);
     boolean existsByUsernameAndPassword(String username, String password);
     UserResponse updateUserInfo(UserRegisterRequest request);
-    boolean makeSubscription(UserRequest request);
+    String makeSubscription();
     boolean bindCreditCard(UUID creditCardId);
     boolean registerCreditCard(CreditCardRequest request);
 

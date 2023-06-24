@@ -2,6 +2,7 @@ package one.terenin.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import one.terenin.dto.common.UserRole;
 import one.terenin.dto.request.CreditCardRequest;
 import one.terenin.dto.request.UserRegisterRequest;
 import one.terenin.dto.request.UserRequest;
@@ -9,15 +10,23 @@ import one.terenin.dto.response.UserResponse;
 import one.terenin.entity.UserEntity;
 import one.terenin.exception.BaseException;
 import one.terenin.exception.children.ServiceCallException;
+import one.terenin.exception.children.ServiceNotFoundException;
 import one.terenin.exception.common.ErrorCode;
 import one.terenin.mapper.UserMapper;
 import one.terenin.repository.UserRepository;
+import one.terenin.security.details.user.UserDetailsImpl;
 import one.terenin.service.UserService;
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+import java.security.Security;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -64,9 +73,25 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    // return the confirmation url from yookassa to client browser or frontend
     @Override
-    public boolean makeSubscription(UserRequest request) {
-        return false;
+    public String makeSubscription() {
+       URI serviceURI = client.getInstances("musalog-payment-service").stream()
+               .map(ServiceInstance::getUri)
+               .findFirst()
+               .map(si -> si.resolve("/api/v1/payment/pay/for/subscription"))
+               .orElseThrow(() -> new ServiceNotFoundException(ErrorCode.SERVICE_NOT_FOUND));
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(serviceURI, String.class);
+        if (responseEntity.getStatusCode().is4xxClientError() || responseEntity.getStatusCode().is5xxServerError()){
+            throw new ServiceCallException(ErrorCode.SERVICE_CALL_REJECTED);
+        }else {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserDetailsImpl details = (UserDetailsImpl) authentication.getPrincipal();
+            UserEntity entity = details.getEntity();
+            entity.setRole(UserRole.SUBSCRIBER);
+            repository.save(entity);
+            return responseEntity.getBody();
+        }
     }
 
     @Override

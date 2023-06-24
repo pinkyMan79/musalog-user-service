@@ -39,10 +39,10 @@ public interface UserApi {
     @PreAuthorize("hasRole('USER') or hasRole('SUBSCRIBER')")
     ResponseEntity<UserResponse> updateUserInfo(@RequestBody UserRegisterRequest request);
 
-    // able to checks from token in payment service
+    // able to checks from token in payment service. Here is paying for subs + returns th confirmation url by yoo api
     @PatchMapping("/check/subscription")
     @PreAuthorize("hasRole('USER') or hasRole('SUBSCRIBER')")
-    ResponseEntity<Boolean> makeSubscription(UserRequest request);
+    ResponseEntity<String> makeSubscription();
 
     // boolean -> rejected or no
     // ver. 1
