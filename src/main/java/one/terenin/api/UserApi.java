@@ -1,8 +1,11 @@
 package one.terenin.api;
 
+import lombok.RequiredArgsConstructor;
 import one.terenin.dto.request.CreditCardRequest;
+import one.terenin.dto.request.OrderRequest;
 import one.terenin.dto.request.UserRegisterRequest;
 import one.terenin.dto.request.UserRequest;
+import one.terenin.dto.response.OrderResponse;
 import one.terenin.dto.response.UserResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -55,6 +58,8 @@ public interface UserApi {
     @PreAuthorize("hasRole('USER') or hasRole('SUBSCRIBER')")
     ResponseEntity<Boolean> registerCreditCard(@RequestBody CreditCardRequest request);
 
-
+    @PostMapping("/create/order")
+    @PreAuthorize("hasRole('SUBSCRIBER')")
+    ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest request);
 
 }

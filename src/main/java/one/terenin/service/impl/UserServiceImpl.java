@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import one.terenin.dto.common.UserRole;
 import one.terenin.dto.request.CreditCardRequest;
+import one.terenin.dto.request.OrderRequest;
 import one.terenin.dto.request.UserRegisterRequest;
 import one.terenin.dto.request.UserRequest;
+import one.terenin.dto.response.OrderResponse;
 import one.terenin.dto.response.UserResponse;
 import one.terenin.entity.UserEntity;
 import one.terenin.exception.BaseException;
@@ -102,5 +104,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean registerCreditCard(CreditCardRequest request) {
         return false;
+    }
+
+    @Override
+    public OrderResponse createOrder(OrderRequest request) {
+        return null;
     }
 }

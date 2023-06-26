@@ -34,6 +34,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 String token = extractor.extractToken(request)
                         .orElseThrow(() -> new TokenException(ErrorCode.TOKEN_MISSING));
                 Authentication authentication = verificator.buildAuthenticationFromToken(token);
+                authentication.setAuthenticated(true);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 filterChain.doFilter(request, response);
             }catch (JwtException e){

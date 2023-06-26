@@ -3,8 +3,10 @@ package one.terenin.controller;
 import lombok.RequiredArgsConstructor;
 import one.terenin.api.UserApi;
 import one.terenin.dto.request.CreditCardRequest;
+import one.terenin.dto.request.OrderRequest;
 import one.terenin.dto.request.UserRegisterRequest;
 import one.terenin.dto.request.UserRequest;
+import one.terenin.dto.response.OrderResponse;
 import one.terenin.dto.response.UserResponse;
 import one.terenin.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +58,11 @@ public class UserController implements UserApi {
 
     @Override
     public ResponseEntity<Boolean> registerCreditCard(CreditCardRequest request) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<OrderResponse> createOrder(OrderRequest request) {
         return null;
     }
 }
