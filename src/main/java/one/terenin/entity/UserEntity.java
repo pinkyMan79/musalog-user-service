@@ -1,5 +1,6 @@
 package one.terenin.entity;
 
+import com.technokratos.springbootadministrationpanel.annotations.GenerateCRUD;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import one.terenin.dto.common.UserRole;
 import one.terenin.entity.parent.AbstractEntity;
+import one.terenin.repository.UserRepository;
 
 import java.util.UUID;
 
@@ -20,6 +22,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "ussr_table")
+@GenerateCRUD(repositoryClass = UserRepository.class)
 public class UserEntity extends AbstractEntity {
     @Column(name = "username", nullable = false)
     private String username;

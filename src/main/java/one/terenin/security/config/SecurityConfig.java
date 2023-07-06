@@ -62,11 +62,4 @@ public class SecurityConfig {
                 .userDetailsService(detailsService);
         return http.build();
     }
-
-    @SneakyThrows
-    @Bean
-    public AuthenticationManager manager(AuthenticationManagerBuilder builder){
-        return builder.userDetailsService(detailsService).passwordEncoder(encoder).and().build();
-    }
-
 }

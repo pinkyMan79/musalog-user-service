@@ -2,7 +2,7 @@ spring:
   application:
     name: musalog-user-service
   datasource:
-    url: jdbc:postgresql://localhost:5433/user-database
+    url: jdbc:postgresql://localhost:5438/user-database
     username: postgres
     password: root
     hikari:
@@ -21,6 +21,10 @@ spring:
         enabled: true
         deregister: on
       enabled: true
+  sbap:
+    entity:
+      path: one.terenin.entity
+      generation-destination: one.terenin
 
 jwt:
   password:

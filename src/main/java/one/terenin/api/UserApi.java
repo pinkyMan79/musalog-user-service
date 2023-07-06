@@ -23,7 +23,7 @@ import java.util.UUID;
 @CrossOrigin(maxAge = 3600)
 public interface UserApi {
 
-    @PostMapping("/register")
+    @PostMapping(value = "/register")
     ResponseEntity<UserResponse> register(@RequestBody UserRegisterRequest request);
 
     @PostMapping("/login")
